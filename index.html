@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+    <!-- Font Awesome CSS Icons (For cool glyphicons) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="./assets/styles.css" />
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark justify-content-center">
+        <h1>Weather Dashboard</h1>
+    </nav>
+    <div class="container" style="border: black 1px solid;">
+        <div class="row">
+            <div class="col-5 citysearch" style="border: black 1px solid;">
+                <aside>
+                    <form>
+                        <div class="input-group">
+                            <div class="row">
+                                <label for="searchCity">Search for a City:</label>
+                            </div>
+                            <div class="form-inline">
+                                <input id="searchCity" class="form-control" type="text" placeholder="Search"
+                                    aria-label="Search">
+                                <div class="input-group-append">
+                                    <button id="run-search" type="submit" class="btn btn-primary" onClick='getWeatherSearch(event)'>
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <ul id="searchCityHistory" class="list-group">
+                        <li class="list-group-item">city</li>
+                        <li class="list-group-item">city</li>
+                        <li class="list-group-item">city</li>
+                        <li class="list-group-item">city</li>
+                        <li class="list-group-item">city</li>
+                        <li class="list-group-item">city</li>
+                        <li class="list-group-item">city</li>                        
+                        <li class="list-group-item">city</li>
+                    </ul>
+                </aside>
+            </div>
+            <div class="col-7" style="border: black 1px solid;">
+                <div class="citydetails" style="border: black 1px solid;">City</div>
+                <div class="forecastdetails" style="border: black 1px solid;">5 Day Forecast</div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- jQuery JS -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="./assets/scripts.js"></script>
+
+</html>
