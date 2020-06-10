@@ -10,11 +10,21 @@ console.log(`weatherHistory: ${weatherHistory}`)
 function initialize(){
     searchWeatherHistoryEL.innerHTML = ""
     // let reversehistory = weatherHistory.reverse()
-    weatherHistory.forEach(function (item, index) {
+/*    weatherHistory.forEach(function (item, index) {
         console.log(`item: ${item}, index: ${index}`)
         searchWeatherHistoryEL.innerHTML +=
         `<li class="list-group-item" onclick="mainApp('${item}')">${item}</li>`
     })
+*/
+    for (let i = weatherHistory.length - 1; i>=0; i-- ){
+        searchWeatherHistoryEL.innerHTML +=
+        `<li class="list-group-item" onclick="mainApp('${weatherHistory[i]}')">${weatherHistory[i]}</li>`
+    }
+}
+
+function clearHistory(){
+    delete localStorage.weatherHistory
+    searchWeatherHistoryEL.innerHTML = ""
 }
 
 // convert temp to celsius
@@ -107,11 +117,12 @@ async function mainApp( city ){
         } else {
             displayCurrentWeather(cityData, uvData)
             displayForecast(forecastData)
-            // weatherHistory.splice(max_search_count)
-            weatherHistory.push(cityData.name)
-
-            localStorage.weatherHistory = JSON.stringify(weatherHistory)
-            initialize()
+            // Added this logic in case user clicks reload
+            if (cityData.name !== weatherHistory[weatherHistory.length-1]){
+                weatherHistory.push(cityData.name)
+                localStorage.weatherHistory = JSON.stringify(weatherHistory)
+                initialize()
+            }
         }
     } catch( e ){
         console.log( e );
