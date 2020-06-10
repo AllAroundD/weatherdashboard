@@ -1,22 +1,34 @@
-
-let defaultCityHistory = []
-
 let citydetailsEL = document.querySelector("#citydetails")
 let forecastEL = document.querySelector("#forecastdetails")
+let searchWeatherHistoryEL = document.querySelector("#searchWeatherHistory")
+const max_search_count = 9
 
-let cityHistory = localStorage.cityHistory ? JSON.parse(localStorage.cityHistory) : defaultCityHistory
-console.log(`cityHistory: ${cityHistory}`)
+let weatherHistory = localStorage.weatherHistory ? JSON.parse(localStorage.weatherHistory) : []
+console.log(`weatherHistory: ${weatherHistory}`)
 
-function convertTemp(temp){
-    return Math.round( ( (temp  -32) * 5 / 9) *10)/10
+
+function initialize(){
+    searchWeatherHistoryEL.innerHTML = ""
+    // let reversehistory = weatherHistory.reverse()
+    weatherHistory.forEach(function (item, index) {
+        console.log(`item: ${item}, index: ${index}`)
+        searchWeatherHistoryEL.innerHTML +=
+        `<li class="list-group-item" onclick="mainApp('${item}')">${item}</li>`
+    })
 }
 
+// convert temp to celsius
+function convertTemp(temp){
+    return Math.round( ( (temp -32) * 5 / 9) *10)/10
+}
+
+// set badge colour based on uvi
 function checkUV(uvi){
-    if (uvi>10){
+    if (uvi > 10){
         return "badge-dark"
-    } else if (uvi<10 && uvi >7){
+    } else if (uvi < 10 && uvi > 7){
         return "badge-danger"
-    } else if (uvi<7 && uvi >5){
+    } else if (uvi < 7 && uvi > 5){
         return "badge-warning"
     } else {
         return "badge-success"
@@ -30,12 +42,12 @@ function displayCurrentWeather(cityData, uvData){
 
     citydetailsEL.innerHTML =
     `<div class="card-body">
-    <h5 class="card-title">${cityData.name} (${currentDate}) <img src="http://openweathermap.org/img/wn/${cityData.weather[0].icon}@2x.png" width="60" height="60" ></h5>
-    <p class="card-text" id="temp">Temperature: ${convertTemp(cityData.main.temp)} &#176;C</p>
-    <p class="card-text" id="humidity">Humidity: ${cityData.main.humidity}</p>
-    <p class="card-text" id="windSpeed">Wind Speed: ${cityData.wind.speed} MPH</p>
-    <p class="card-text" id="UVIndex">UV Index: <span class="badge ${uvBadgeColour}">${uvData.current.uvi}</span></p>
-  </div>`
+        <h5 class="card-title">${cityData.name} (${currentDate}) <img src="http://openweathermap.org/img/wn/${cityData.weather[0].icon}@2x.png" width="60" height="60" ></h5>
+        <p class="card-text" id="temp">Temperature: ${convertTemp(cityData.main.temp)} &#176;C</p>
+        <p class="card-text" id="humidity">Humidity: ${cityData.main.humidity}</p>
+        <p class="card-text" id="windSpeed">Wind Speed: ${cityData.wind.speed} MPH</p>
+        <p class="card-text" id="UVIndex">UV Index: <span class="badge ${uvBadgeColour}">${uvData.current.uvi}</span></p>
+    </div>`
 }
 
 function displayForecast(forecastData){
@@ -86,15 +98,20 @@ async function mainApp( city ){
         const coords = {lat: cityData.coord.lat, lon: cityData.coord.lon}
         const uvData = await fetchData('uv',`lat=${cityData.coord.lat}&lon=${cityData.coord.lon}&units=imperial`)
 
-        console.log( `cityData: `, cityData )
-        console.log( `coords: `, coords )
-        console.log( `uvData: `, uvData )
+        // console.log( `cityData: `, cityData )
+        // console.log( `coords: `, coords )
+        // console.log( `uvData: `, uvData )
         console.log(`forecastData.cod: ${forecastData.cod}`)
         if (forecastData.status === "404") {
             citydetailsEL.innerHTML = "City not found. Please try and search again"
         } else {
             displayCurrentWeather(cityData, uvData)
             displayForecast(forecastData)
+            // weatherHistory.splice(max_search_count)
+            weatherHistory.push(cityData.name)
+
+            localStorage.weatherHistory = JSON.stringify(weatherHistory)
+            initialize()
         }
     } catch( e ){
         console.log( e );
@@ -127,3 +144,6 @@ function getWeatherSearch(event){
 
     mainApp(searchQuery)
 }
+
+window.onload = mainApp( weatherHistory[weatherHistory.length-1] )
+initialize()
