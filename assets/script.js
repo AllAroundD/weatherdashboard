@@ -1,5 +1,5 @@
 let citydetailsEL = document.querySelector("#citydetails")
-let forecastEL = document.querySelector("#forecastdetails")
+let forecastEL = document.querySelector("#forecastDiv")
 let searchWeatherHistoryEL = document.querySelector("#searchWeatherHistory")
 const max_search_count = 9
 
@@ -54,19 +54,22 @@ function displayCurrentWeather(cityData, uvData){
 
 function displayForecast(forecastData){
     forecastEL.innerHTML = ""
+    // forecastEL.innerHTML = "<div class='row'>"
     forecastData.list.forEach(function(item, index){
         // the forecast list is 40 items, 8 items a day
         if (index%8==0 && index < 40){
             let futureDate = moment().add(index/8+1, 'days').format('D/MM/YYYY')
             forecastEL.innerHTML +=
-            `<div class="card-body forecastCard">
+            `
+                <div class="card-body forecastCard">
                 <h5 class="card-title">${futureDate}</h5>
-                <p><img src="http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png" width="40" height="40"><p>
+                <p><img src="http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png" width="40" height="40"></p>
                 <p class="forecastTemp">Temp: ${convertTemp(item.main.temp)} &#176;C</p>
                 <p class="forecasthumidity">Humidity: ${item.main.humidity} %</p>
             </div>`
         }
     })
+    // forecastEL.innerHTML += "</div>"
 }
 
 async function fetchData(property, params=''){
