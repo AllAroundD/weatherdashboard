@@ -36,7 +36,7 @@
                                         </button>
                                         <button id="clear-history" type="submit" class="btn btn-primary"
                                             onClick='clearHistory()'>
-                                            Clear History<!--<i class="fas fa-trash-alt"></i>-->
+                                            Clear History
                                         </button>
                                     </div>
                                 </div>
@@ -44,20 +44,15 @@
                         </div>
                     </form>
                     <ul id="searchWeatherHistory" class="list-group">
-                        <!-- <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li>
-                        <li class="list-group-item">city</li> -->
                     </ul>
                 </aside>
             </div>
             <div class="col-7" style="border: black 1px solid;">
                 <div id="citydetails" class="citydetails" style="border: black 1px solid;">City</div>
-                <div id="forecastdetails" class="forecastdetails" style="border: black 1px solid;">5 Day Forecast</div>
+                <div id="card forecastMain">
+                    <h5>5-Day Forecast:</h5>
+                    <div id="forecastdetails" class="forecastdetails card" style="border: black 1px solid;"></div>
+                </div>
             </div>
         </div>
     </div>

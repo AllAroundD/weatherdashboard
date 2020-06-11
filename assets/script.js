@@ -9,13 +9,6 @@ console.log(`weatherHistory: ${weatherHistory}`)
 
 function initialize(){
     searchWeatherHistoryEL.innerHTML = ""
-    // let reversehistory = weatherHistory.reverse()
-/*    weatherHistory.forEach(function (item, index) {
-        console.log(`item: ${item}, index: ${index}`)
-        searchWeatherHistoryEL.innerHTML +=
-        `<li class="list-group-item" onclick="mainApp('${item}')">${item}</li>`
-    })
-*/
     for (let i = weatherHistory.length - 1; i>=0; i-- ){
         searchWeatherHistoryEL.innerHTML +=
         `<li class="list-group-item" onclick="mainApp('${weatherHistory[i]}')">${weatherHistory[i]}</li>`
@@ -48,13 +41,12 @@ function checkUV(uvi){
 function displayCurrentWeather(cityData, uvData){
     let currentDate = moment().format('D/MM/YYYY')
     let uvBadgeColour = checkUV(uvData.current.uvi)
-    // citydetailsEL.innerHTML = ""
 
     citydetailsEL.innerHTML =
     `<div class="card-body">
-        <h5 class="card-title">${cityData.name} (${currentDate}) <img src="http://openweathermap.org/img/wn/${cityData.weather[0].icon}@2x.png" width="60" height="60" ></h5>
+        <h5 class="card-title">${cityData.name} (${currentDate}) <img src="http://openweathermap.org/img/wn/${cityData.weather[0].icon}@2x.png" width="60" height="60"></h5>
         <p class="card-text" id="temp">Temperature: ${convertTemp(cityData.main.temp)} &#176;C</p>
-        <p class="card-text" id="humidity">Humidity: ${cityData.main.humidity}</p>
+        <p class="card-text" id="humidity">Humidity: ${cityData.main.humidity}%</p>
         <p class="card-text" id="windSpeed">Wind Speed: ${cityData.wind.speed} MPH</p>
         <p class="card-text" id="UVIndex">UV Index: <span class="badge ${uvBadgeColour}">${uvData.current.uvi}</span></p>
     </div>`
@@ -62,14 +54,19 @@ function displayCurrentWeather(cityData, uvData){
 
 function displayForecast(forecastData){
     forecastEL.innerHTML = ""
-
-    forecastEL.innerHTML=
-    `<img src="" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>`
+    forecastData.list.forEach(function(item, index){
+        // the forecast list is 40 items, 8 items a day
+        if (index%8==0 && index < 40){
+            let futureDate = moment().add(index/8+1, 'days').format('D/MM/YYYY')
+            forecastEL.innerHTML +=
+            `<div class="card-body forecastCard">
+                <h5 class="card-title">${futureDate}</h5>
+                <p><img src="http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png" width="40" height="40"><p>
+                <p class="forecastTemp">Temp: ${convertTemp(item.main.temp)} &#176;C</p>
+                <p class="forecasthumidity">Humidity: ${item.main.humidity} %</p>
+            </div>`
+        }
+    })
 }
 
 async function fetchData(property, params=''){
@@ -108,16 +105,12 @@ async function mainApp( city ){
         const coords = {lat: cityData.coord.lat, lon: cityData.coord.lon}
         const uvData = await fetchData('uv',`lat=${cityData.coord.lat}&lon=${cityData.coord.lon}&units=imperial`)
 
-        // console.log( `cityData: `, cityData )
-        // console.log( `coords: `, coords )
-        // console.log( `uvData: `, uvData )
-        console.log(`forecastData.cod: ${forecastData.cod}`)
         if (forecastData.status === "404") {
             citydetailsEL.innerHTML = "City not found. Please try and search again"
         } else {
             displayCurrentWeather(cityData, uvData)
             displayForecast(forecastData)
-            // Added this logic in case user clicks reload
+            // Added this logic in case user clicks reload, not to add the city again to the array and localStorage
             if (cityData.name !== weatherHistory[weatherHistory.length-1]){
                 weatherHistory.push(cityData.name)
                 localStorage.weatherHistory = JSON.stringify(weatherHistory)
@@ -149,9 +142,6 @@ function getWeatherSearch(event){
     if (inputCityEl.value == '') 
         return inputCityEl.value = ''
     searchQuery=cleanInput(searchQuery);
-
-    console.log(`[getWeatherSearch] getting weather for: ${searchQuery}`)
-
 
     mainApp(searchQuery)
 }
