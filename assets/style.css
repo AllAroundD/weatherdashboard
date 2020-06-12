@@ -2,18 +2,20 @@ body{
     margin: 0;
     padding: 0;
 }
+
 .row{
     margin: 1%;
 }
+
 .navbar{
     color: white;
 }
+
 .citysearch{
-    /* padding: 15px; */
-    /* font-size: 18px; */
     min-height: 300px;
     background: #dbdfe5;
 }
+
 .citydetails{
     min-height: 300px;
 }
@@ -21,6 +23,20 @@ body{
 .btn{
     background-color: blue;
     color: white;
+}
+
+#clear-history{
+    font-size: 70%;
+    margin-left: .5rem;
+}
+
+.list-group-item:hover {
+    background-color: lightcyan;
+}
+
+#intro{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode';
+    font-size: 1.5rem;
 }
 
 .card-body{
@@ -44,6 +60,7 @@ body{
     width: 10rem;
 }
 
+/* this is to set the forecast to display vertically */
 @media all and (max-width: 960px){
     #forecastDiv{
         width: 100%; 

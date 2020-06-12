@@ -1,12 +1,12 @@
 # Weather Dashboard
 
 ## Description
+This is a weather dashboard that runs in the browser and feature dynamically updated HTML and CSS and uses the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. This also uses `localStorage` to store any persistent data (for the search history).
 
-This is a weather dashboard that runs in the browser and feature dynamically updated HTML and CSS and use the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. Also uses `localStorage` to store any persistent data.
-
+## Link to Deployed Application
+https://allaroundd.github.io/weatherdashboard/
 
 ## Usage
-
 ```
 GIVEN a weather dashboard with form inputs
 WHEN I search for a city
@@ -25,4 +25,9 @@ THEN I am presented with the last searched city forecast
 
 The following image demonstrates the application functionality:
 
-![weather dashboard demo](./Assets/06-server-side-apis-homework-demo.png)
+![weather dashboard demo](./Assets/WeatherDashboard-demo.gif)
+
+I added a 'clear history' button since the history list could get long.
+
+## What I Learned
+I learned a lot using results from the api. One of my big challenges was interpeting the forecast data and building the 5 day forecast cards using bootstrap.
