@@ -25,7 +25,7 @@ THEN I am presented with the last searched city forecast
 
 The following image demonstrates the application functionality:
 
-![weather dashboard demo](./Assets/WeatherDashboard-demo.gif)
+![weather dashboard demo](./assets/WeatherDashboard-demo.gif)
 
 I added a 'clear history' button since the history list could get long.
 
